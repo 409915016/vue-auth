@@ -44,30 +44,30 @@
 
 <template>
   <form class="create" @submit.prevent="handleSubmit" >
-    <h3>Add a New Workout</h3>
+    <h3>添加新的待办事项</h3>
 
-    <label>Excersize Title:</label>
+    <label>待办事项:</label>
     <input
         type="text"
         v-model="title"
         :class="{ 'error' : emptyFields.includes('title') }"
     />
 
-    <label>Load (in kg):</label>
+    <label>时间:</label>
     <input
-        type="number"
+        type="datetime-local"
         v-model="load"
         :class="{ 'error' : emptyFields.includes('load') }"
     />
 
-    <label>Reps:</label>
+    <label>详细内容:</label>
     <input
-        type="number"
+        type="text"
         v-model="reps"
         :class="{ 'error' : emptyFields.includes('reps') }"
     />
 
-    <button>Add Workout</button>
+    <button>添加</button>
 
     <div v-if="error" class="error">{{ error }}</div>
   </form>

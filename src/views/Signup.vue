@@ -13,20 +13,20 @@
 
 <template>
   <form class="signup" @submit="handleSubmit">
-    <h3>Sign up</h3>
-    <label>Email:</label>
+    <h3>注册</h3>
+    <label>邮箱:</label>
     <input
         type="email"
         v-model="email"
     />
 
-    <label>Password:</label>
+    <label>密码:</label>
     <input
         type="password"
         v-model="password"
     />
 
-    <button :disabled="isLoading">Sign up</button>
+    <button :disabled="isLoading">注册</button>
 
     <div v-if="err" class="error">{{ error }}</div>
   </form>

@@ -7,18 +7,18 @@
 <template>
   <header>
     <div class="container">
-      <RouterLink to="/"><h1>Workout Budy</h1></RouterLink>
+      <RouterLink to="/"><h1>待办事项应用</h1></RouterLink>
       <nav>
           <template v-if="false">
             <div>
               <span>{ user.email }</span>
-              <button @click="handleLogoutClick">Log out</button>
+              <button @click="handleLogoutClick">退出</button>
             </div>
           </template>
           <template v-else>
             <div>
-              <RouterLink to="/login">Login </RouterLink>
-              <RouterLink to="/signup">Signup </RouterLink>
+              <RouterLink to="/login">登录 </RouterLink>
+              <RouterLink to="/signup">注册 </RouterLink>
             </div>
           </template>
       </nav>

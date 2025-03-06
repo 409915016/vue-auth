@@ -1,6 +1,8 @@
 <script setup>
   defineProps(['workout'])
   import formatDistanceToNow from 'date-fns/formatDistanceToNow'
+  import { zhCN } from "date-fns/locale";
+
   async function handleClick() {
     //const { user } = useAuthContext()
     // if(!user) {
@@ -24,10 +26,10 @@
 <template>
   <div class="workout-details">
     <h4>{{ workout.title }}</h4>
-    <p><strong>Load (kg): </strong>{{ workout.load }}</p>
-    <p><strong>Reps: </strong>{{ workout.reps }}</p>
-    <p>{{ formatDistanceToNow(new Date(workout.createdAt), { addSuffix: true }) }}</p>
-    <span class="material-symbols-outlined" @click="handleClick">delete</span>
+    <p><strong>时间: </strong>{{ workout.load }}</p>
+    <p><strong>详细内容: </strong>{{ workout.reps }}</p>
+    <p>{{ formatDistanceToNow(new Date(workout.createdAt), { addSuffix: true,locale: zhCN }) }}</p>
+    <span class="material-symbols-outlined" @click="handleClick"></span>
   </div>
 </template>
 

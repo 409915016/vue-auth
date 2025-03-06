@@ -13,21 +13,21 @@
 
 <template>
   <form class="login" @submit.prevent="handleSubmit">
-    <h3>Login</h3>
+    <h3>登录</h3>
 
-    <label>Email:</label>
+    <label>邮箱:</label>
     <input
         type="email"
         v-model="email"
     />
 
-    <label>Password:</label>
+    <label>密码:</label>
     <input
         type="password"
         v-model="password"
     />
 
-    <button :disabled="isLoading">Log in</button>
+    <button :disabled="isLoading">登录</button>
 
     <div v-if="err" class="error">{{ error }}</div>
   </form>
