@@ -28,8 +28,8 @@
     <h4>{{ workout.title }}</h4>
     <p><strong>时间: </strong>{{ workout.load }}</p>
     <p><strong>详细内容: </strong>{{ workout.reps }}</p>
-    <p>{{ formatDistanceToNow(new Date(workout.createdAt), { addSuffix: true,locale: zhCN }) }}</p>
-    <span class="material-symbols-outlined" @click="handleClick"></span>
+    <p>{{ formatDistanceToNow(new Date(workout.createdAt), { addSuffix: true, locale: zhCN }) }}</p>
+    <span class="material-symbols-outlined" @click="handleClick">delete</span>
   </div>
 </template>
 

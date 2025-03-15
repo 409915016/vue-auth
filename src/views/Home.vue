@@ -4,7 +4,7 @@ import WorkoutForm from '@/components/WorkoutForm.vue'
 import WorkoutDetails from '@/components/WorkoutDetails.vue'
 
 const workouts = reactive([
-  { _id: 1, title: '备课', load: '2025-03-04 16:27', reps: '准备HTML CSS 课件', createdAt: '2025-03-04 16:27:47'}
+  { _id: 1, title: '备课', load: '2025-03-04 16:27', reps: '准备HTML CSS 课件，更新学习项目代码', createdAt: '2025-03-04 16:27:47'}
 ])
 </script>
 
