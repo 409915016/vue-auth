@@ -24,7 +24,7 @@
 </script>
 
 <template>
-  <div class="workout-details">
+  <div class="todo-detail">
     <h4>{{ workout.title }}</h4>
     <p><strong>时间: </strong>{{ workout.load }}</p>
     <p><strong>详细内容: </strong>{{ workout.reps }}</p>
