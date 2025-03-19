@@ -1,0 +1,42 @@
+/* google font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap');
+
+/* layout */
+:root {
+    --primary: #1aac83;
+    --error: #e7195a;
+}
+body {
+    background: #f1f1f1;
+    margin: 0;
+    font-family: "Poppins";
+}
+
+.todo-detail {
+    background: #fff;
+    border-radius: 4px;
+    margin: 20px auto;
+    padding: 20px;
+    position: relative;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+}
+.todo-detail h4 {
+    margin: 0 0 10px 0;
+    font-size: 1.2em;
+    color: var(--primary);
+}
+.todo-detail p {
+    margin: 0;
+    font-size: 0.9em;
+    color: #555;
+}
+.todo-detail span {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    background: #f1f1f1;
+    padding: 6px;
+    border-radius: 50%;
+    color: #333;
+}
