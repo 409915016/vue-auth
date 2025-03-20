@@ -1,5 +1,12 @@
 <script setup>
 defineProps(['value'])
+const emit = defineEmits(['delete']);
+
+function onDeleteBtnClickHandle(value){
+  console.log('in TodoDetail: delete:', value)
+  emit('delete', value)
+}
+
 </script>
 
 <template>
@@ -8,7 +15,7 @@ defineProps(['value'])
     <p><strong>时间: </strong>{{ value.date }}</p>
     <p><strong>详细内容: </strong>{{ value.description }}</p>
     <p>{{ value.createdAt }}</p>
-    <span class="material-symbols-outlined" @click="handleClick">delete</span>
+    <span class="material-symbols-outlined" @click="onDeleteBtnClickHandle(value)">delete</span>
   </div>
 
 </template>

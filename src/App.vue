@@ -17,10 +17,15 @@ const todo_list = [
   { _id: 1, title: '财务管理', date: '2025-03-09 16:27', description: '记录本月支出并调整预算、取消不必要的订阅服务', createdAt: '2025-03-04 16:27:47'}
 ]
 
+function onTodoDeleteHandle (value){
+  console.log('in App.vue. Delete todo is: ', value)
+}
+
+
 </script>
 
 <template>
-  <TodoDetail v-for="todo in todo_list" :value="todo" :key="todo.id"/>
+  <TodoDetail v-for="todo in todo_list" :value="todo" :key="todo.id" @delete="onTodoDeleteHandle"/>
 </template>
 
 <style scoped>
