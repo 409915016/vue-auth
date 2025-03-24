@@ -1,38 +1,35 @@
 <script setup>
-import { ref } from 'vue'
-const title = ref('')
-const load = ref('')
-const reps = ref('')
+import { ref, defineEmits } from 'vue'
+const emit = defineEmits(['onSubmit'])
 const error = ref(null)
 const emptyFields = ref([])
 const todo_form = ref({
   title: '申请奖学金',
   date: '2025-03-04 16:27',
   description: '打印表格、按规定填写',
-  createdAt: '',
 })
-function getFormattedDate() {
-  const now = new Date();
-
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0'); // 月份从 0 开始，需要 +1
-  const day = String(now.getDate()).padStart(2, '0');
-  const hours = String(now.getHours()).padStart(2, '0');
-  const minutes = String(now.getMinutes()).padStart(2, '0');
-  const seconds = String(now.getSeconds()).padStart(2, '0');
-
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
 
 async function handleSubmit() {
-  const { title, date, description } = todo_form.value
   emptyFields.value = [] //clear emptyFields
-  if (!title) emptyFields.value.push('title')
-  if (!date) emptyFields.value.push('date')
-  if (!description) emptyFields.value.push('description')
-  todo_form.value.createdAt = getFormattedDate()
+  const { title, date, description } = todo_form.value
+
+  //valid TodoForm
+  if(!title || !description || !date) {
+    if (!title) emptyFields.value.push('title')
+    if (!date) emptyFields.value.push('date')
+    if (!description) emptyFields.value.push('description')
+    return
+  }
+
   console.log('valid: ', todo_form.value)
 
+  //emit TodoForm onSubmit event
+  emit('onSubmit', {
+    ...todo_form.value
+  })
+
+  //clean form field
+  todo_form.value = { title: '', date: '', description: ''}
 }
 </script>
 
