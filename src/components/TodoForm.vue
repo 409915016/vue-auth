@@ -17,6 +17,8 @@ async function handleSubmit() {
   if (!title) emptyFields.value.push('title')
   if (!date) emptyFields.value.push('date')
   if (!description) emptyFields.value.push('description')
+
+  console.log('valid: ', emptyFields.value)
 }
 </script>
 
@@ -51,6 +53,9 @@ async function handleSubmit() {
 </template>
 
 <style scoped>
+form {
+  margin: 40px;
+}
 label, input {
   display: block;
 }
