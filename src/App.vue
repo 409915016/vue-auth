@@ -4,10 +4,10 @@ import TodoDetail from './components/TodoDetail.vue'
 import TodoForm from "@/components/TodoForm.vue";
 
 const todo_list = ref([
-  // { _id: 1, title: '个人生活', date: '2025-03-04 16:27', description: '锻炼30分钟、阅读30页书籍、整理房间并清理书桌', createdAt: '2025-03-04 16:27:47'},
-  // { _id: 2, title: '工作', date: '2025-03-07 16:27', description: '完成并提交项目报告、参加下午3点的团队会议', createdAt: '2025-03-04 16:27:47'},
-  // { _id: 3, title: '社交娱乐', date: '2025-03-08 16:27', description: '观看经典电影、参加兴趣小组', createdAt: '2025-03-04 16:27:47'},
-  // { _id: 4, title: '财务管理', date: '2025-03-09 16:27', description: '记录本月支出并调整预算、取消不必要的订阅服务', createdAt: '2025-03-04 16:27:47'}
+  { _id: 1, title: '个人生活', date: '2025-03-04 16:27', description: '锻炼30分钟、阅读30页书籍、整理房间并清理书桌', createdAt: '2025-03-04 16:27:47'},
+  { _id: 2, title: '工作', date: '2025-03-07 16:27', description: '完成并提交项目报告、参加下午3点的团队会议', createdAt: '2025-03-04 16:27:47'},
+  { _id: 3, title: '社交娱乐', date: '2025-03-08 16:27', description: '观看经典电影、参加兴趣小组', createdAt: '2025-03-04 16:27:47'},
+  { _id: 4, title: '财务管理', date: '2025-03-09 16:27', description: '记录本月支出并调整预算、取消不必要的订阅服务', createdAt: '2025-03-04 16:27:47'}
 ])
 
 function onTodoDeleteHandle (value){
@@ -45,13 +45,40 @@ function onTodoFormSubmitHandle(todo){
 </script>
 
 <template>
-  <TodoDetail
-      @delete="onTodoDeleteHandle"
-      v-for="todo in todo_list"
-      :value="todo"
-      :key="todo.id"/>
-  <TodoForm @onSubmit="onTodoFormSubmitHandle"/>
+  <div class="pages">
+    <div class="home">
+      <div class="todo-list">
+        <TodoDetail
+            @delete="onTodoDeleteHandle"
+            v-for="todo in todo_list"
+            :value="todo"
+            :key="todo.id"/>
+
+      </div>
+      <div class="todo-form">
+        <TodoForm @onSubmit="onTodoFormSubmitHandle"/>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
+.pages{
+  max-width: 1400px;
+  padding: 20px;
+  margin: 0 auto;
+}
+
+/* homepage */
+.home {
+  display: flex;
+  column-gap: 100px;
+}
+.todo-list {
+  flex-grow: 3;
+}
+.todo-form {
+  flex-grow: 1;
+}
+
 </style>
