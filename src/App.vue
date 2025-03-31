@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import TodoDetail from './components/TodoDetail.vue'
 import TodoForm from "@/components/TodoForm.vue";
+import Navbar from "@/components/Navbar.vue";
 
 const todo_list = ref([
   { _id: 1, title: '个人生活', date: '2025-03-04 16:27', description: '锻炼30分钟、阅读30页书籍、整理房间并清理书桌', createdAt: '2025-03-04 16:27:47'},
@@ -45,6 +46,7 @@ function onTodoFormSubmitHandle(todo){
 </script>
 
 <template>
+  <Navbar/>
   <div class="pages">
     <div class="home">
       <div class="todo-list">
