@@ -1,4 +1,7 @@
 <script setup>
+import formatDistanceToNow from 'date-fns/formatDistanceToNow'
+import { zhCN } from "date-fns/locale";
+
 const emit = defineEmits(['delete']);
 defineProps(['value'])
 function onDeleteBtnClickHandle(value){
@@ -12,7 +15,7 @@ function onDeleteBtnClickHandle(value){
     <h4>{{ value.title }}</h4>
     <p><strong>时间: </strong>{{ value.date }}</p>
     <p><strong>详细内容: </strong>{{ value.description }}</p>
-    <p>{{ value.createdAt }}</p>
+    <p>{{ formatDistanceToNow(new Date(value.createdAt), { addSuffix: true, locale: zhCN }) }}</p>
     <span
         class="material-symbols-outlined"
         @click="onDeleteBtnClickHandle(value)">delete</span>
