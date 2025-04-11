@@ -4,10 +4,10 @@
 <template>
   <header>
     <div class="navbar">
-      <a href="/"><h1>待办事项应用</h1></a>
+      <RouterLink to="/"><h1>待办事项应用</h1></RouterLink>
       <nav>
-        <a href="/login">登录 </a>
-        <a href="/signup">注册 </a>
+        <RouterLink to="/login">登录</RouterLink>
+        <RouterLink to="/signup">注册</RouterLink>
       </nav>
     </div>
   </header>
