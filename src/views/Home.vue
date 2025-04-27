@@ -35,19 +35,26 @@ function getFormattedDate() {
 }
 
 function onTodoFormSubmitHandle(todo){
-  todo_list.value.push({
+  axios.post('http://localhost:3000/todo', {
     ...todo,
-    _id: Math.random().toString(36).substr(2, 10),
     createdAt: getFormattedDate(),
+    _id: Math.random().toString(36).substr(2, 10),
+  }).then((res)=>{
+    alert('提交成功')
+    refreshTodoList()
   })
 }
-onBeforeMount(()=>{
+
+function refreshTodoList (){
   axios.get('http://localhost:3000/todo').then((res)=>{
     const {status, data} = res
     if(status === 200) {
       todo_list.value = data
     }
   })
+}
+onBeforeMount(()=>{
+  refreshTodoList()
 })
 
 </script>
