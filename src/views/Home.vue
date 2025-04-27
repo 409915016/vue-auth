@@ -12,13 +12,11 @@ const todo_list = ref([
 
 function onTodoDeleteHandle (value){
   console.log('in App.vue. Delete todo is: ', value)
-  const { _id } = value
-  const new_todo_list = todo_list.value.filter(i => {
-    return i._id !== _id
+  const { id } = value
+  axios.delete(`http://localhost:3000/todo/${id}`).then((res)=>{
+    alert('删除成功')
+    refreshTodoList()
   })
-  console.log('new_todo_list: ',new_todo_list)
-  todo_list.value = new_todo_list
-  console.log('todo_list: ',todo_list)
 }
 
 function getFormattedDate() {
@@ -38,7 +36,7 @@ function onTodoFormSubmitHandle(todo){
   axios.post('http://localhost:3000/todo', {
     ...todo,
     createdAt: getFormattedDate(),
-    _id: Math.random().toString(36).substr(2, 10),
+    // id: Math.random().toString(36).substr(2, 10),
   }).then((res)=>{
     alert('提交成功')
     refreshTodoList()
