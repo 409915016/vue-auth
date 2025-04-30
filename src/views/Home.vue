@@ -10,6 +10,8 @@ const todo_list = ref([
   // { _id: 4, title: '财务管理', date: '2025-03-09 16:27', description: '记录本月支出并调整预算、取消不必要的订阅服务', createdAt: '2025-03-04 16:27:47'}
 ])
 
+const loading = ref(true)
+
 function onTodoDeleteHandle (value){
   console.log('in App.vue. Delete todo is: ', value)
   const { id } = value
@@ -48,6 +50,7 @@ function refreshTodoList (){
     const {status, data} = res
     if(status === 200) {
       todo_list.value = data
+      loading.value = false // 改变 loading 的状态
     }
   })
 }
@@ -58,18 +61,20 @@ onBeforeMount(()=>{
 </script>
 
 <template>
-  <div class="home">
-    <div class="todo-list">
-      <TodoDetail
-          @delete="onTodoDeleteHandle"
-          v-for="todo in todo_list"
-          :value="todo"
-          :key="todo.id"/>
-
-    </div>
-    <div class="todo-form">
-      <TodoForm @onSubmit="onTodoFormSubmitHandle"/>
-    </div>
+  <div class="home" :class="{'home--loading': loading}">
+    <template v-if="loading" class="todo-list ">加载中……</template>
+    <template v-else>
+      <div class="todo-list fadeIn">
+        <TodoDetail
+            @delete="onTodoDeleteHandle"
+            v-for="todo in todo_list"
+            :value="todo"
+            :key="todo.id"/>
+      </div>
+      <div class="todo-form fadeIn">
+        <TodoForm @onSubmit="onTodoFormSubmitHandle"/>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -78,6 +83,22 @@ onBeforeMount(()=>{
 .home {
   display: flex;
   column-gap: 100px;
+}
+.home--loading {
+  min-height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  color: #666;
+}
+.fadeIn {
+  opacity: 1;
+  animation: fadeIn 1.5s;
+}
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 .todo-list {
   flex-grow: 3;
