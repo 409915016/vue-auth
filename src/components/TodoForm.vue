@@ -1,5 +1,6 @@
 <script setup>
-import { ref, defineEmits } from 'vue'
+import { ref, defineEmits, defineProps } from 'vue'
+const { disabled } = defineProps(['disabled'])
 const emit = defineEmits(['onSubmit'])
 const error = ref(null)
 const emptyFields = ref([])
@@ -58,7 +59,7 @@ async function handleSubmit() {
         :class="{ 'error' : emptyFields.includes('description') }"
     />
 
-    <button>添加</button>
+    <button :disabled="disabled">{{ disabled ? '添加中...' : '添加' }}</button>
     <div v-if="error" class="error">{{ error }}</div>
   </form>
 </template>

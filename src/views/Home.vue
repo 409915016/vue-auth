@@ -11,6 +11,7 @@ const todo_list = ref([
 ])
 
 const loading = ref(true)
+const form_loading = ref(false)
 
 function onTodoDeleteHandle (value){
   console.log('in App.vue. Delete todo is: ', value)
@@ -35,17 +36,19 @@ function getFormattedDate() {
 }
 
 function onTodoFormSubmitHandle(todo){
+  form_loading.value = true
   axios.post('http://localhost:3000/todo', {
     ...todo,
     createdAt: getFormattedDate(),
     // id: Math.random().toString(36).substr(2, 10),
   }).then((res)=>{
-    alert('提交成功')
+    form_loading.value = false
     refreshTodoList()
   })
 }
 
 function refreshTodoList (){
+  loading.value = true
   axios.get('http://localhost:3000/todo').then((res)=>{
     const {status, data} = res
     if(status === 200) {
@@ -71,10 +74,10 @@ onBeforeMount(()=>{
             :value="todo"
             :key="todo.id"/>
       </div>
-      <div class="todo-form fadeIn">
-        <TodoForm @onSubmit="onTodoFormSubmitHandle"/>
-      </div>
     </template>
+      <div class="todo-form">
+        <TodoForm :disabled="form_loading" @onSubmit="onTodoFormSubmitHandle"/>
+      </div>
   </div>
 </template>
 
