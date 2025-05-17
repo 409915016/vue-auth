@@ -11,6 +11,7 @@ const todo_list = ref([
 ])
 
 const loading = ref(true)
+const error = ref(false)
 
 function onTodoDeleteHandle (value){
   console.log('in App.vue. Delete todo is: ', value)
@@ -46,13 +47,22 @@ function onTodoFormSubmitHandle(todo){
 }
 
 function refreshTodoList (){
-  axios.get('http://localhost:3000/todo').then((res)=>{
-    const {status, data} = res
-    if(status === 200) {
-      todo_list.value = data
-      loading.value = false // 改变 loading 的状态
-    }
-  })
+  loading.value = true
+  axios
+      .get('http://localhost:3000/todo')
+      .then((res)=>{
+        const {status, data} = res
+        if(status === 200) {
+          todo_list.value = data
+          loading.value = false // 改变 loading 的状态
+          error.value = false
+        }
+      })
+      .catch(err =>{
+        console.log(err)
+        loading.value = false
+        error.value = true
+      })
 }
 onBeforeMount(()=>{
   refreshTodoList()
@@ -61,8 +71,12 @@ onBeforeMount(()=>{
 </script>
 
 <template>
-  <div class="home" :class="{'home--loading': loading}">
-    <template v-if="loading" class="todo-list ">加载中……</template>
+  <div class="home" :class="{'home--loading': loading, 'home--error': error}">
+    <template v-if="loading">加载中……</template>
+    <template v-else-if="error">
+      <p>加载失败，请稍后重试</p>
+      <button @click="refreshTodoList">重新加载</button>
+    </template>
     <template v-else>
       <div class="todo-list fadeIn">
         <TodoDetail
@@ -84,13 +98,27 @@ onBeforeMount(()=>{
   display: flex;
   column-gap: 100px;
 }
-.home--loading {
+.home--loading, .home--error{
   min-height: 50vh;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 20px;
   color: #666;
+}
+.home--error {
+  text-align: center;
+  flex-direction: column;
+  color: #111;
+}
+.home--error button {
+  background: var(--primary);
+  border: 0;
+  color: #fff;
+  padding: 10px;
+  font-family: "Poppins";
+  border-radius: 4px;
+  cursor: pointer;
 }
 .fadeIn {
   opacity: 1;
