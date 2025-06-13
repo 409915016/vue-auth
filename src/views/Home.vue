@@ -11,6 +11,7 @@ const todo_list = ref([
 ])
 
 const loading = ref(true)
+const error = ref(false)
 const form_loading = ref(false)
 
 function onTodoDeleteHandle (value){
@@ -36,26 +37,33 @@ function getFormattedDate() {
 }
 
 function onTodoFormSubmitHandle(todo){
-  form_loading.value = true
   axios.post('http://localhost:3000/todo', {
     ...todo,
     createdAt: getFormattedDate(),
     // id: Math.random().toString(36).substr(2, 10),
   }).then((res)=>{
-    form_loading.value = false
+    alert('提交成功')
     refreshTodoList()
   })
 }
 
 function refreshTodoList (){
   loading.value = true
-  axios.get('http://localhost:3000/todo').then((res)=>{
-    const {status, data} = res
-    if(status === 200) {
-      todo_list.value = data
-      loading.value = false // 改变 loading 的状态
-    }
-  })
+  axios
+      .get('http://localhost:3000/todo')
+      .then((res)=>{
+        const {status, data} = res
+        if(status === 200) {
+          todo_list.value = data
+          loading.value = false // 改变 loading 的状态
+          error.value = false
+        }
+      })
+      .catch(err =>{
+        console.log(err)
+        loading.value = false
+        error.value = true
+      })
 }
 onBeforeMount(()=>{
   refreshTodoList()
@@ -64,8 +72,12 @@ onBeforeMount(()=>{
 </script>
 
 <template>
-  <div class="home" :class="{'home--loading': loading}">
-    <template v-if="loading" class="todo-list ">加载中……</template>
+  <div class="home" :class="{'home--loading': loading, 'home--error': error}">
+    <template v-if="loading">加载中……</template>
+    <template v-else-if="error">
+      <p>加载失败，请稍后重试</p>
+      <button @click="refreshTodoList">重新加载</button>
+    </template>
     <template v-else>
       <div class="todo-list fadeIn">
         <TodoDetail
@@ -74,10 +86,10 @@ onBeforeMount(()=>{
             :value="todo"
             :key="todo.id"/>
       </div>
-    </template>
-      <div class="todo-form">
-        <TodoForm :disabled="form_loading" @onSubmit="onTodoFormSubmitHandle"/>
+      <div class="todo-form fadeIn">
+        <TodoForm @onSubmit="onTodoFormSubmitHandle"/>
       </div>
+    </template>
   </div>
 </template>
 
@@ -87,13 +99,27 @@ onBeforeMount(()=>{
   display: flex;
   column-gap: 100px;
 }
-.home--loading {
+.home--loading, .home--error{
   min-height: 50vh;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 20px;
   color: #666;
+}
+.home--error {
+  text-align: center;
+  flex-direction: column;
+  color: #111;
+}
+.home--error button {
+  background: var(--primary);
+  border: 0;
+  color: #fff;
+  padding: 10px;
+  font-family: "Poppins";
+  border-radius: 4px;
+  cursor: pointer;
 }
 .fadeIn {
   opacity: 1;
