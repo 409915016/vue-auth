@@ -107,53 +107,57 @@ onBeforeMount(()=>{
       <button @click="refreshTodoList">重新加载</button>
     </template>
     <template v-else>
-      <div class="todo-list fadeIn">
-        <!-- 排序单选按钮区域 -->
-        <div class="sort-controls">
-          <div class="radio-group">
-            <label class="custom-radio">
-              <input
-                  type="radio"
-                  name="sort"
-                  value="createdAt"
-                  v-model="currentSort"
-              >
-              <span class="radio-text">最新创建</span>
-            </label>
-            <label class="custom-radio">
-              <input
-                  type="radio"
-                  name="sort"
-                  value="date"
-                  v-model="currentSort"
-              >
-              <span class="radio-text">按计划日期</span>
-            </label>
-            <label class="custom-radio">
-              <input
-                  type="radio"
-                  name="sort"
-                  value="description"
-                  v-model="currentSort"
-              >
-              <span class="radio-text">详细计划</span>
-            </label>
+      <div class="content-wrapper content-loaded">
+        <div class="todo-list fadeIn">
+          <!-- 排序单选按钮区域 -->
+          <div class="sort-controls">
+            <div class="radio-group">
+              <label class="custom-radio">
+                <input
+                    type="radio"
+                    name="sort"
+                    value="createdAt"
+                    v-model="currentSort"
+                >
+                <span class="radio-text">最新创建</span>
+              </label>
+              <label class="custom-radio">
+                <input
+                    type="radio"
+                    name="sort"
+                    value="date"
+                    v-model="currentSort"
+                >
+                <span class="radio-text">按计划日期</span>
+              </label>
+              <label class="custom-radio">
+                <input
+                    type="radio"
+                    name="sort"
+                    value="description"
+                    v-model="currentSort"
+                >
+                <span class="radio-text">详细计划</span>
+              </label>
+            </div>
           </div>
-        </div>
 
-        <!-- 使用排序后的列表渲染 -->
-        <div class="todo-list-wrapper">
-          <TodoDetail
-              @delete="onTodoDeleteHandle"
-              v-for="todo in sortedTodos"
-              :value="todo"
-              :key="todo.id"/>
-        </div>
+          <!-- 使用排序后的列表渲染 -->
+          <div class="todo-list-wrapper">
+            <TodoDetail
+                @delete="onTodoDeleteHandle"
+                v-for="todo in sortedTodos"
+                :value="todo"
+                :key="todo.id"/>
+          </div>
 
+        </div>
       </div>
+
       <div class="todo-form fadeIn">
         <TodoForm @onSubmit="onTodoFormSubmitHandle"/>
       </div>
+
     </template>
   </div>
 </template>
@@ -163,6 +167,7 @@ onBeforeMount(()=>{
 .home {
   display: flex;
   column-gap: 100px;
+  min-height: 50vh;
 }
 .home--loading, .home--error{
   min-height: 50vh;
@@ -171,7 +176,22 @@ onBeforeMount(()=>{
   align-items: center;
   font-size: 20px;
   color: #666;
+  transition: opacity 0.5s ease-out;
 }
+
+.content-wrapper {
+  flex-grow: 3;
+  opacity: 0;
+  transform: translateY(20px); /* 轻微下移效果 */
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+/* 内容加载完成后的状态 */
+.content-loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .home--error {
   text-align: center;
   flex-direction: column;
@@ -195,7 +215,7 @@ onBeforeMount(()=>{
   100% { opacity: 1; }
 }
 .todo-list {
-  flex-grow: 3;
+
 }
 .todo-form {
   flex-grow: 1;
