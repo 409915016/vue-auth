@@ -3,6 +3,7 @@ import TodoForm from "@/components/TodoForm.vue";
 import TodoDetail from "@/components/TodoDetail.vue";
 import {onBeforeMount, ref, computed} from "vue";
 import axios from "axios";
+
 const todo_list = ref([
   // { _id: 1, title: '个人生活', date: '2025-04-01 16:27', description: '锻炼30分钟、阅读30页书籍、整理房间并清理书桌', createdAt: '2025-04-01 16:27'},
   // { _id: 2, title: '工作', date: '2025-03-07 16:27', description: '完成并提交项目报告、参加下午3点的团队会议', createdAt: '2025-03-04 16:27:47'},
@@ -12,7 +13,6 @@ const todo_list = ref([
 
 const loading = ref(true)
 const error = ref(false)
-const form_loading = ref(false)
 
 // 'createdAt' -> 最新日期,
 // 'date' -> 按计划日期
@@ -42,10 +42,10 @@ const sortedTodos = computed(() => {
   return sorted;
 });
 
-function onTodoDeleteHandle (value){
+function onTodoDeleteHandle(value) {
   console.log('in App.vue. Delete todo is: ', value)
-  const { id } = value
-  axios.delete(`http://localhost:3000/todo/${id}`).then((res)=>{
+  const {id} = value
+  axios.delete(`http://localhost:3000/todo/${id}`).then((res) => {
     alert('删除成功')
     refreshTodoList()
   })
@@ -64,36 +64,37 @@ function getFormattedDate() {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
-function onTodoFormSubmitHandle(todo){
+function onTodoFormSubmitHandle(todo) {
   axios.post('http://localhost:3000/todo', {
     ...todo,
     createdAt: getFormattedDate(),
     // id: Math.random().toString(36).substr(2, 10),
-  }).then((res)=>{
+  }).then((res) => {
     alert('提交成功')
     refreshTodoList()
   })
 }
 
-function refreshTodoList (){
+function refreshTodoList() {
   loading.value = true
   axios
       .get('http://localhost:3000/todo')
-      .then((res)=>{
+      .then((res) => {
         const {status, data} = res
-        if(status === 200) {
+        if (status === 200) {
           todo_list.value = data
           loading.value = false // 改变 loading 的状态
           error.value = false
         }
       })
-      .catch(err =>{
+      .catch(err => {
         console.log(err)
         loading.value = false
         error.value = true
       })
 }
-onBeforeMount(()=>{
+
+onBeforeMount(() => {
   refreshTodoList()
 })
 
@@ -169,7 +170,8 @@ onBeforeMount(()=>{
   column-gap: 100px;
   min-height: 50vh;
 }
-.home--loading, .home--error{
+
+.home--loading, .home--error {
   min-height: 50vh;
   display: flex;
   justify-content: center;
@@ -197,6 +199,7 @@ onBeforeMount(()=>{
   flex-direction: column;
   color: #111;
 }
+
 .home--error button {
   background: var(--primary);
   border: 0;
@@ -206,32 +209,40 @@ onBeforeMount(()=>{
   border-radius: 4px;
   cursor: pointer;
 }
+
 .fadeIn {
   opacity: 1;
   animation: fadeIn 1.5s;
 }
-@keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-.todo-list {
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
+
 .todo-form {
   flex-grow: 1;
 }
+
 .todo-list-wrapper {
   margin-top: 30px;
 }
+
 /* 自定义单选按钮样式 */
 .radio-group {
   display: flex;
   gap: 12px; /* 按钮之间的间距 */
 }
+
 .custom-radio {
   cursor: pointer;
   position: relative;
 }
+
 /* 隐藏原生单选按钮 */
 .custom-radio input[type="radio"] {
   opacity: 0;
@@ -239,6 +250,7 @@ onBeforeMount(()=>{
   width: 0;
   height: 0;
 }
+
 /* 单选按钮的文字样式（未选中状态） */
 .radio-text {
   display: inline-block;
@@ -248,12 +260,14 @@ onBeforeMount(()=>{
   color: #555;
   transition: all 0.3s ease; /* 过渡动画 */
 }
+
 /* 选中状态的样式 */
 .custom-radio input[type="radio"]:checked + .radio-text {
   background-color: #1aac83; /* 选中时的背景色 */
   color: white; /* 选中时的文字颜色 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 /* 鼠标悬停效果 */
 .custom-radio:hover .radio-text {
   color: #1aac83;
