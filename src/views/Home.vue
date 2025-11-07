@@ -1,7 +1,7 @@
 <script setup>
 import TodoForm from "@/components/TodoForm.vue";
 import TodoDetail from "@/components/TodoDetail.vue";
-import {onBeforeMount, ref} from "vue";
+import {onBeforeMount, ref, computed} from "vue";
 import axios from "axios";
 const todo_list = ref([
   // { _id: 1, title: '个人生活', date: '2025-04-01 16:27', description: '锻炼30分钟、阅读30页书籍、整理房间并清理书桌', createdAt: '2025-04-01 16:27'},
@@ -12,6 +12,44 @@ const todo_list = ref([
 
 const loading = ref(true)
 const error = ref(false)
+
+// 'createdAt' -> 最新日期,
+// 'date' -> 按计划日期
+// 'description' -> 详细计划,
+const currentSort = ref("createdAt");
+
+// 排序逻辑：根据选中的复选框状态对列表进行排序
+const sortedTodos = computed(() => {
+  const sorted = [...todo_list.value];
+
+  if (currentSort.value === 'createdAt') {
+    // 按创建日期降序
+    return sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  }
+
+  if (currentSort.value === 'date') {
+    // 按计划日期降序
+    return sorted.sort((a, b) => new Date(b.date) - new Date(a.date));
+  }
+
+  if (currentSort.value === 'description') {
+    // 按计划日期降序
+    return sorted.sort((a, b) => b.description.length - a.description.length);
+  }
+
+  // 默认顺序
+  return sorted;
+});
+// 复选框切换逻辑：确保每次只选中一个排序方式
+function handleSortChange(type) {
+  if (type === 'createdAt') {
+    sortByCreatedAt.value = !sortByCreatedAt.value;
+    if (sortByCreatedAt.value) sortByDate.value = false;
+  } else {
+    sortByDate.value = !sortByDate.value;
+    if (sortByDate.value) sortByCreatedAt.value = false;
+  }
+}
 
 function onTodoDeleteHandle (value){
   console.log('in App.vue. Delete todo is: ', value)
@@ -79,11 +117,48 @@ onBeforeMount(()=>{
     </template>
     <template v-else>
       <div class="todo-list fadeIn">
-        <TodoDetail
-            @delete="onTodoDeleteHandle"
-            v-for="todo in todo_list"
-            :value="todo"
-            :key="todo.id"/>
+        <!-- 排序单选按钮区域 -->
+        <div class="sort-controls">
+          <div class="radio-group">
+            <label class="custom-radio">
+              <input
+                  type="radio"
+                  name="sort"
+                  value="createdAt"
+                  v-model="currentSort"
+              >
+              <span class="radio-text">最新创建</span>
+            </label>
+            <label class="custom-radio">
+              <input
+                  type="radio"
+                  name="sort"
+                  value="date"
+                  v-model="currentSort"
+              >
+              <span class="radio-text">按计划日期</span>
+            </label>
+            <label class="custom-radio">
+              <input
+                  type="radio"
+                  name="sort"
+                  value="description"
+                  v-model="currentSort"
+              >
+              <span class="radio-text">详细计划</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- 使用排序后的列表渲染 -->
+        <div class="todo-list-wrapper">
+          <TodoDetail
+              @delete="onTodoDeleteHandle"
+              v-for="todo in sortedTodos"
+              :value="todo"
+              :key="todo.id"/>
+        </div>
+
       </div>
       <div class="todo-form fadeIn">
         <TodoForm @onSubmit="onTodoFormSubmitHandle"/>
@@ -134,4 +209,44 @@ onBeforeMount(()=>{
 .todo-form {
   flex-grow: 1;
 }
+.todo-list-wrapper {
+  margin-top: 30px;
+}
+/* 自定义单选按钮样式 */
+.radio-group {
+  display: flex;
+  gap: 12px; /* 按钮之间的间距 */
+}
+.custom-radio {
+  cursor: pointer;
+  position: relative;
+}
+/* 隐藏原生单选按钮 */
+.custom-radio input[type="radio"] {
+  opacity: 0;
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+/* 单选按钮的文字样式（未选中状态） */
+.radio-text {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 5px; /* 圆角 */
+  font-size: 0.9em;
+  color: #555;
+  transition: all 0.3s ease; /* 过渡动画 */
+}
+/* 选中状态的样式 */
+.custom-radio input[type="radio"]:checked + .radio-text {
+  background-color: #1aac83; /* 选中时的背景色 */
+  color: white; /* 选中时的文字颜色 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+/* 鼠标悬停效果 */
+.custom-radio:hover .radio-text {
+  color: #1aac83;
+  background-color: rgba(26, 172, 131, 0.1);
+}
+
 </style>
