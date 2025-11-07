@@ -41,16 +41,6 @@ const sortedTodos = computed(() => {
   // 默认顺序
   return sorted;
 });
-// 复选框切换逻辑：确保每次只选中一个排序方式
-function handleSortChange(type) {
-  if (type === 'createdAt') {
-    sortByCreatedAt.value = !sortByCreatedAt.value;
-    if (sortByCreatedAt.value) sortByDate.value = false;
-  } else {
-    sortByDate.value = !sortByDate.value;
-    if (sortByDate.value) sortByCreatedAt.value = false;
-  }
-}
 
 function onTodoDeleteHandle (value){
   console.log('in App.vue. Delete todo is: ', value)
