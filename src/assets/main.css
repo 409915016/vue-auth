@@ -36,6 +36,10 @@ form button {
     border-radius: 4px;
     cursor: pointer;
 }
+form button[disabled] {
+    opacity: 0.8;
+    cursor: not-allowed;
+}
 div.error {
     padding: 10px;
     background: #ffefef;
